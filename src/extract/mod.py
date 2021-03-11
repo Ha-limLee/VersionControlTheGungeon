@@ -37,7 +37,7 @@ def version(mod_id: str) -> str:
 
     return res
 
-def search(mod_name: str) -> list[str]:
+def search(mod_name: str) -> list[dict]:
     url: str = 'https://modworkshop.net/mws/api/modsapi.php?cids[]=&tags[]=&sort=date&query=' + mod_name + '&gid=286&func=mods'
     req = requests.get(url)
 
@@ -45,38 +45,56 @@ def search(mod_name: str) -> list[str]:
     soup = BeautifulSoup(html, 'html.parser')
     py_data = json.loads(soup.text)
 
+    '''
     res = [str]
     for elm in py_data['content']:
         print(elm['name'].strip())
         res.append(elm['name'].strip())
 
     return res
+    '''
+    return py_data['content']
 
 class _ModsDB:
     """
     Use ModsDB to create a instance instead of this class\n
     structure
-        +---------------------------------+
-        | mod_name | mod_id | mod_version |
-        |---------------------------------|
-        |                                 |
-        +---------------------------------+
+        +-------------------------------------------------+
+        | mod_name | mod_id | mod_version | mod_is_latest |
+        |-------------------------------------------------|
+        |                                                 |
+        +-------------------------------------------------+
     """
     def __init__(self) -> None:
         self.__connection = sqlite3.connect('mod_versions.db')
         self.__cursor = self.__connection.cursor()
+
         self.__cursor.execute('CREATE TABLE IF NOT EXISTS mods\
-            (name text, id text, version text)')
+                                    (name text, id text, version text, is_latest integer)')
         pass
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         print('clean up ModsDB')
         self.__connection.close()
         pass
 
     def insertDB(self, mod_name: str, mod_id: str, mod_version: str = '-1') -> None:
-        self.__cursor.execute(f'INSERT INTO mods\
-            VALUES({mod_name}, {mod_id}, {mod_version})')
+        self.__cursor.execute(
+            'INSERT INTO mods(name, id, version)\
+                VALUES (?, ?, ?)', (mod_name, mod_id, mod_version)
+        )
+        self.__connection.commit()
+
+    def print(self) -> None:
+        self.__cursor.execute(
+            'select * from mods'
+        )
+        for row in self.__cursor.fetchall():
+            print(row)
+        
+        
+    
+    
 
 class ModsDB:
     """
