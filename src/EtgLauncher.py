@@ -1,3 +1,4 @@
+import sqlite3
 from PySide6.QtWidgets import QFileDialog, QGridLayout, QMessageBox, QWidget, QPushButton
 import subprocess
 import json

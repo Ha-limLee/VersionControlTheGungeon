@@ -20,6 +20,13 @@ class ModUpdater:
         conn = sqlite3.connect('versionTBL')
         cur = conn.cursor()
 
+        if len(self.updatables) > 0:
+            path = cur.execute('SELECT path FROM versionTBL').fetchone()[0]
+            temp = path.split('/')[0:-1]
+            modtxt = reduce(lambda x,y: x+'/'+y, temp) + '/mods.txt'
+            if os.path.isfile(modtxt):
+                os.remove(modtxt)
+
         for each in self.updatables:
             id = each.getId()
             date = each.getDate()

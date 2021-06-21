@@ -73,6 +73,9 @@ class MainFrame(QWidget):
 
         self.setLayout(layout)
 
+        self.setWindowTitle('VCtG')
+        self.setMinimumSize(560, 350)
+
 
 def run_window():
     from qasync import QEventLoop

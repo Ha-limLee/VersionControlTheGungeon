@@ -28,7 +28,7 @@ class ModWriter:
     def update(self, data):
         print('in observer')
         self.conn = sqlite3.connect('versionTBL')
-        self.cur = self.conn.curosr()
+        self.cur = self.conn.cursor()
 
         argument = [tuple(each.values()) for each in data]
         
