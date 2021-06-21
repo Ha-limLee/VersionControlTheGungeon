@@ -1,5 +1,5 @@
 To run
-1. Python ^3.9.2
+1. Python ^3.9.1
 2. clone this repo
 3. cd cloned directory
 4. create venv\
@@ -12,6 +12,8 @@ To run
     Press "F1" key, then type "Python: Select Interpreter"\
     Now choose .venv/Scripts/python.exe
 8. install libs\
+    pip install -r requirements.txt\
+    or\
     pip install PySide6\
     pip install qasync\
     pip install requests\
