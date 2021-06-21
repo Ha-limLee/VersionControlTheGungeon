@@ -1,2 +1,8 @@
+vctg-config.json
+versionTBL
+
+test.py
+
 .venv/
-/test.db
+
+__pycache__/
